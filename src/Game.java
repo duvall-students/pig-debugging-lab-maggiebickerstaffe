@@ -1,16 +1,20 @@
 import java.util.Random;
 
 public class Game {
-	private Player player1;
-	private Player player2;
+	// #1, must declare players initially so that they will never be 
+	// null
+	private Player player1 = new GUIPlayer();
+	private Player player2 = new ComputerPlayer();
+	
+	
 	private Random die;
 	private Spinner spinner;
 	private final String LOSER_SPIN = "grunt";
 	private final int LOSER_ROLL = 1;
 	
 	public Game(){
-		Player player1 = new GUIPlayer();
-		Player player2 = new ComputerPlayer();
+		//Player player1 = new GUIPlayer();
+		//Player player2 = new ComputerPlayer();
 		die = new Random();
 		spinner = new Spinner();
 	}
@@ -31,6 +35,8 @@ public class Game {
 			else{
 				whoseTurn = player1;
 			}
+			//#4, never rechecks for a winner
+			winner();
 		}
 		printEndGameMessage();
 	}
@@ -54,11 +60,14 @@ public class Game {
 			
 			if(roll == LOSER_ROLL){
 				System.out.println("Lose a turn.");
+				// #6, must lose their points as well as lose a turn 
+				whoseTurn.resetScore();
 				return 0;
 			}
 			else if(spin == LOSER_SPIN.toUpperCase()){
 				System.out.println("Too bad!  Lose all your points.");
-				whoseTurn.resetScore();
+				//whoseTurn.resetScore();
+				// #7, should lost their turn not their points
 				return 0;
 			}
 			else{
@@ -72,7 +81,7 @@ public class Game {
 	
 	// True if one of the players has won the game.
 	public boolean winner(){
-		return player1.hasWon() && player2.hasWon();
+		return player1.hasWon() || player2.hasWon();
 	}
 	
 	/* 

@@ -12,7 +12,9 @@ public class Spinner {
 	}
 	
 	public String spin(){
-		double spinNumber = spinRandom.nextDouble();
+	//	double spinNumber = spinRandom.nextDouble();
+	//  #3, if you add 0.1, the random number will always be above 0.0
+		double spinNumber = spinRandom.nextDouble() + 1;
 		return numToWord(spinNumber);
 	}			
 	
@@ -25,7 +27,9 @@ public class Spinner {
 		double low = 0;
 		boolean done = false;
 		String result = "";
-		while(!done){
+	//	while(!done){
+	//  #2, the index must next exceed the the length of the array
+		while(!done && index < probabilities.length){
 			double high = probabilities[index] + low;
 			if(spinNumber>= low && spinNumber< high){
 				result = sections[index];
