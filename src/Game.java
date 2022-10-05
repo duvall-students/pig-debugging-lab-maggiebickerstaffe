@@ -35,8 +35,6 @@ public class Game {
 			else{
 				whoseTurn = player1;
 			}
-			//#4, never rechecks for a winner
-			winner();
 		}
 		printEndGameMessage();
 	}
@@ -51,23 +49,31 @@ public class Game {
 	 */
 	public int takeATurn(Player whoseTurn){
 		int roundScore = 0;
+		//#4, never rechecks for a winner
+		if (winner()) {
+			printEndGameMessage();
+		}
 		boolean keepGoing = true;
 		printStartRoundMessage(whoseTurn);
 		while(keepGoing){
-			int roll = die.nextInt(7);
+			// #3 the plus one will stop the die from rolling a 0, changing the possible numbers to 1-6
+			int roll = die.nextInt(6) + 1;
 			String spin = spinner.spin();
 			System.out.println(roll+ " "+ spin);
-			
+			//#6 spin is a string so should be .equals
+			//#7 of the roll is a one and the spin is a "grunt" the player should lose
+			//all points and reset their score 
 			if(roll == LOSER_ROLL){
 				System.out.println("Lose a turn.");
-				// #6, must lose their points as well as lose a turn 
-				whoseTurn.resetScore();
+				if (losePoints(spin)) {
+					System.out.println("Too bad!  Lose all your points.");
+					whoseTurn.resetScore();
+				}
 				return 0;
 			}
-			else if(spin == LOSER_SPIN.toUpperCase()){
+			else if (losePoints(spin)) {
 				System.out.println("Too bad!  Lose all your points.");
-				//whoseTurn.resetScore();
-				// #7, should lost their turn not their points
+				whoseTurn.resetScore();
 				return 0;
 			}
 			else{
@@ -79,6 +85,13 @@ public class Game {
 		return roundScore;
 	}
 	
+	public boolean losePoints(String spin) {
+		if (spin.equals(LOSER_SPIN.toUpperCase())){
+			return true;
+		}
+		return false;
+	}
+
 	// True if one of the players has won the game.
 	public boolean winner(){
 		return player1.hasWon() || player2.hasWon();
