@@ -21,10 +21,12 @@ public class Spinner {
 	 * based on the given probabilities.
 	 */
 	public String numToWord(double spinNumber){	
-		int index = 1;
+		int index = 0;
 		double low = 0;
 		boolean done = false;
 		String result = "";
+	//	while(!done){
+	//  #2, the index must next exceed the the length of the array
 		while(!done){
 			double high = probabilities[index] + low;
 			if(spinNumber>= low && spinNumber< high){

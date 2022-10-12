@@ -4,7 +4,6 @@ public abstract class Player {
 	protected String myName;
 	protected int myScore;
 	private final int WIN_SCORE = 100;
-	
 	public Player(String myName){
 		myScore = 0;
 	}
